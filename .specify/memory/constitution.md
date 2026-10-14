@@ -19,8 +19,10 @@ Test-Driven Development (TDD) is NON-NEGOTIABLE across both backend and frontend
 2. **Endpoint Integration Testing (Happy Path Mandatory)**: Every backend API endpoint MUST have at least one automated integration test covering its happy path (verifying successful end-to-end execution, HTTP status code, expected response contract, and proper database state persistence). Moq MUST be used in integration test suites to substitute external services, third-party gateways, or unmanaged external dependencies while testing the end-to-end ASP.NET Core pipeline.
 3. **Frontend Testing**: Frontend tests MUST cover components, services, pipes, and interceptors using isolated test harnesses and reactive testing patterns.
 
-### IV. Resilient Validation & Error Handling (Result/Notification Pattern)
-Exceptions MUST NEVER be thrown for predictable business failures, input validation errors, or domain invariant violations. All domain operations, application commands, and queries MUST express operational outcomes using the Result Pattern (`Result<T>` / `Result`) or the Notification Pattern. Errors and invariant violations MUST be captured as strongly-typed error objects or notification collections. ASP.NET Core API endpoints MUST translate Result outcomes to idiomatic HTTP response codes (e.g., 200 OK, 201 Created, 400 Bad Request, 404 Not Found, 422 Unprocessable Entity). Exceptions are strictly reserved for unrecoverable, truly exceptional infrastructural faults (e.g., catastrophic hardware failures, unexpected network disconnection).
+### IV. Resilient Validation, Error Handling & RFC 7807 Problem Details
+Exceptions MUST NEVER be thrown for predictable business failures, input validation errors, or domain invariant violations. All domain operations, application commands, and queries MUST express operational outcomes using the Result Pattern (`Result<T>` / `Result`) or the Notification Pattern. Errors and invariant violations MUST be captured as strongly-typed error objects or notification collections.
+
+ASP.NET Core API endpoints MUST translate failure Result outcomes and unhandled exceptions into standardized **RFC 7807 Problem Details** payloads (`application/problem+json`). Validation failures MUST use standard `ValidationProblemDetails` (or `ProblemDetails` with an `errors` collection), mapping domain error codes, titles, HTTP status codes, and actionable detail messages without leaking raw stack traces or internal implementation secrets. Successful outcomes translate to idiomatic HTTP response codes (e.g., 200 OK, 201 Created). Exceptions are strictly reserved for unrecoverable, truly exceptional infrastructural faults (e.g., catastrophic hardware failures, unexpected network disconnection) and MUST be captured by global exception handling middleware that formats the response as an RFC 7807 Problem Details object with HTTP 500 Internal Server Error.
 
 ### V. Single Responsibility & Strict File Isolation (One Entity/Class per File)
 Every class, interface, record, enum, struct, Angular component, service, pipe, directive, or interceptor MUST reside in its own dedicated, individual file. Bundling multiple entities, classes, or models into a single file is STRICTLY FORBIDDEN. High readability for future human code reviews is paramount; code MUST be self-explanatory, cleanly structured, and adhere strictly to SOLID principles. Naming conventions MUST adhere to official industry and framework standards:
@@ -41,7 +43,7 @@ Installing or introducing third-party external libraries or packages without pri
 - **Database**: SQLite for relational local storage, managed via structured schema migrations.
 - **Persistence & Unit of Work**: Repository Pattern combined with Unit of Work (`IUnitOfWork`). Mutations MUST execute inside transaction boundaries with explicit commit and rollback mechanisms.
 - **Query Performance & Tracking Policy**: Non-tracking queries (`AsNoTracking`) MUST be the default for all read operations. Change tracking is strictly restricted to mutation pipelines. Split querying (`AsSplitQuery`) MUST be applied to multi-collection joins (e.g., tasks and subtasks) and heavy queries to eliminate Cartesian explosion.
-- **Validation & Results**: Result Pattern / Notification Pattern for all domain, command, and query flows, eliminating unnecessary exceptions.
+- **Validation, Results & Error Representation**: Result Pattern / Notification Pattern for all domain, command, and query flows, eliminating unnecessary exceptions. All API error responses (4xx client/validation errors and 5xx server faults) MUST strictly adhere to the **RFC 7807 Problem Details** standard (`application/problem+json`).
 - **Eventing**: In-process Domain Events dispatched upon aggregate persistence.
 - **Testing Stack**: **xUnit** and **Moq** for unit testing; integration tests leveraging `WebApplicationFactory` and in-memory SQLite fixtures (using Moq for external/third-party boundaries). Every API endpoint MUST have at least one happy path integration test.
 
@@ -73,6 +75,7 @@ Before code can be merged or finalized:
 - All unit, integration, and frontend tests MUST pass with 100% success.
 - Unit tests MUST use **xUnit** and **Moq**.
 - Every API endpoint MUST have at least one verified happy-path integration test.
+- API error responses conform strictly to the **RFC 7807 Problem Details** specification for both business validation failures and infrastructural faults.
 - Static analysis, linters, and compiler warnings MUST be addressed.
 - Code review MUST verify the One-Type-Per-File constraint and absence of unauthorized dependencies.
 - No business exceptions in application or domain layers.
@@ -90,4 +93,4 @@ This Constitution is the foundational governing document of the TaskFy project a
    - **PATCH**: Wording improvements, non-semantic clarifications, or typo fixes.
 3. Upon approval, `.specify/memory/constitution.md` MUST be updated, ratified, and dated accordingly.
 
-**Version**: 1.2.0 | **Ratified**: 2026-10-12 | **Last Amended**: 2026-10-14
+**Version**: 1.3.0 | **Ratified**: 2026-10-12 | **Last Amended**: 2026-10-14
