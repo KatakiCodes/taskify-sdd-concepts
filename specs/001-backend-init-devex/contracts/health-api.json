@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HealthCheckResponse",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": ["Healthy", "Degraded", "Unhealthy"],
+      "description": "Overall operational readiness status"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC timestamp of probe execution"
+    },
+    "version": {
+      "type": "string",
+      "description": "Running API assembly version"
+    },
+    "environment": {
+      "type": "string",
+      "description": "Hosting environment name"
+    },
+    "duration": {
+      "type": "string",
+      "description": "Elapsed probe duration"
+    }
+  },
+  "required": ["status", "timestamp", "version", "environment"],
+  "additionalProperties": false
+}

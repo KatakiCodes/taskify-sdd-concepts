@@ -8,6 +8,13 @@
 
 **Input**: User description: "Crie uma specificação para a primeira fase que será a inicialização do projeto extruturaçãoi e configuração do projeto backend (api). Esta spec estará focada em DevEx ou dev experience. A ideia desta fase é poder criar a base do projeto backend, focar na implementação das regras e conseitos arquiteturais definidas em /speckit-constitution. Para estrutura de pastas do projeto, inicialmente teremos: na raiz: Src -> (Backend, Frontend)"
 
+## Clarifications
+
+### Session 2026-10-14
+
+- Q: Qual abordagem de definição de endpoints deve ser adotada na API para suportar as Vertical Slices? → A: Controllers tradicionais do ASP.NET Core herdando de `ControllerBase` (cada controller isolado em seu próprio arquivo conforme a regra One-Type-Per-File).
+- Q: Como deve ser realizada a aplicação de migrations do banco SQLite durante o desenvolvimento local? → A: Migração automática no startup da API apenas em ambiente Development (simplificando o DevEx).
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Standardized Project Architecture & Workspace Layout (Priority: P1)
@@ -86,7 +93,7 @@ As a backend developer writing business logic or API handlers, I want a standard
 - **FR-001**: System MUST establish a root workspace structure containing a `src/` directory partitioned into `Backend/` and `Frontend/`.
 - **FR-002**: System MUST structure `src/Backend/` following Clean Architecture and DDD principles, isolating Domain, Application, Infrastructure, and API boundaries.
 - **FR-003**: System MUST enforce inward-only dependency direction where the Domain core has zero dependencies on frameworks, databases, or transport layers.
-- **FR-004**: System MUST support CQRS and Vertical Slice architecture, enabling command and query handlers, validation, and endpoint mappings to be co-located within feature slices.
+- **FR-004**: System MUST support CQRS and Vertical Slice architecture, utilizing traditional ASP.NET Core controllers (inheriting from `ControllerBase`), where each controller is dedicated to its vertical slice and isolated in its own file.
 - **FR-005**: System MUST enforce strict file isolation of exactly one type (class, interface, record, or enum) per file across all backend code files, with the filename matching the type name.
 - **FR-006**: System MUST provide a reusable Result/Notification pattern baseline that encapsulates success, failure, payload values, and error collections without using exceptions for control flow.
 - **FR-007**: System MUST translate all API error responses (4xx validation/business failures and 5xx unexpected faults) into standardized RFC 7807 Problem Details payloads (`application/problem+json`).
@@ -95,6 +102,7 @@ As a backend developer writing business logic or API handlers, I want a standard
 - **FR-010**: System MUST include a baseline health probe endpoint with at least one automated integration test validating its happy-path response.
 - **FR-011**: System MUST enforce the rule that every newly implemented API endpoint is accompanied by at least one passing automated integration test covering its happy path.
 - **FR-012**: System MUST provide reproducible build and test commands runnable from the repository workspace.
+- **FR-013**: In Development environment, the API MUST automatically apply pending SQLite database migrations during application startup.
 
 ### Key Entities *(include if feature involves data)*
 
@@ -118,4 +126,5 @@ As a backend developer writing business logic or API handlers, I want a standard
 - Target developers have the standard .NET runtime and SDK (version 10) installed in their local development environment.
 - Frontend implementation and detailed setup will occur in a dedicated subsequent phase within the designated `src/Frontend/` location.
 - Relational persistence in local development and testing relies on SQLite with in-memory capability for integration test harnesses.
+- In Development environment, the API automatically provisions and applies pending SQLite database schema migrations on startup.
 - No third-party cloud infrastructure or external network services are required to execute local development builds or automated test suites.
