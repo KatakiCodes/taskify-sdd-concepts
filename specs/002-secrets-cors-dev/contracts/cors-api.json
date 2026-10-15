@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DevelopmentCorsContract",
+  "description": "Contract specification for Cross-Origin Resource Sharing (CORS) behavior in Development environment",
+  "type": "object",
+  "properties": {
+    "preflightRequest": {
+      "type": "object",
+      "required": ["method", "path", "headers"],
+      "properties": {
+        "method": { "type": "string", "const": "OPTIONS" },
+        "path": { "type": "string", "pattern": "^/.*" },
+        "headers": {
+          "type": "object",
+          "required": ["Origin", "Access-Control-Request-Method"],
+          "properties": {
+            "Origin": { "type": "string", "examples": ["http://localhost:4200", "http://localhost:3000"] },
+            "Access-Control-Request-Method": { "type": "string", "examples": ["GET", "POST", "PUT", "DELETE"] },
+            "Access-Control-Request-Headers": { "type": "string", "examples": ["Content-Type", "Authorization", "X-Custom-Header"] }
+          }
+        }
+      }
+    },
+    "preflightResponse": {
+      "type": "object",
+      "required": ["statusCode", "headers"],
+      "properties": {
+        "statusCode": { "type": "integer", "enum": [200, 204] },
+        "headers": {
+          "type": "object",
+          "required": ["Access-Control-Allow-Origin"],
+          "properties": {
+            "Access-Control-Allow-Origin": { "type": "string", "const": "*" },
+            "Access-Control-Allow-Methods": { "type": "string" },
+            "Access-Control-Allow-Headers": { "type": "string" }
+          }
+        }
+      }
+    },
+    "actualRequest": {
+      "type": "object",
+      "required": ["method", "path", "headers"],
+      "properties": {
+        "method": { "type": "string", "enum": ["GET", "POST", "PUT", "DELETE"] },
+        "path": { "type": "string", "examples": ["/health"] },
+        "headers": {
+          "type": "object",
+          "required": ["Origin"],
+          "properties": {
+            "Origin": { "type": "string", "examples": ["http://localhost:4200"] }
+          }
+        }
+      }
+    },
+    "actualResponse": {
+      "type": "object",
+      "required": ["statusCode", "headers"],
+      "properties": {
+        "statusCode": { "type": "integer", "enum": [200, 201, 204, 400, 404, 500] },
+        "headers": {
+          "type": "object",
+          "required": ["Access-Control-Allow-Origin"],
+          "properties": {
+            "Access-Control-Allow-Origin": { "type": "string", "const": "*" }
+          }
+        }
+      }
+    }
+  }
+}
