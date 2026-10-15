@@ -66,14 +66,14 @@
 
 ### Tests for User Story 2
 
-- [ ] T021 [P] [US2] Create unit tests for `GetTaskByIdQueryHandler` in `src/Backend/TaskFy.UnitTests/Features/Tasks/GetTaskByIdQueryHandlerTests.cs`
-- [ ] T022 [P] [US2] Create mandatory happy-path and 404 integration test for `GET /tasks/{id}` in `src/Backend/TaskFy.IntegrationTests/Features/Tasks/GetTaskByIdEndpointTests.cs`
+- [X] T021 [P] [US2] Create unit tests for `GetTaskByIdQueryHandler` in `src/Backend/TaskFy.UnitTests/Features/Tasks/GetTaskByIdQueryHandlerTests.cs`
+- [X] T022 [P] [US2] Create mandatory happy-path and 404 integration test for `GET /tasks/{id}` in `src/Backend/TaskFy.IntegrationTests/Features/Tasks/GetTaskByIdEndpointTests.cs`
 
 ### Implementation for User Story 2
 
-- [ ] T023 [P] [US2] Create `GetTaskByIdQuery` record implementing `IQuery<Result<TaskDto>>` in `src/Backend/TaskFy.Application/Features/Tasks/Queries/GetTaskById/GetTaskByIdQuery.cs`
-- [ ] T024 [US2] Implement `GetTaskByIdQueryHandler` in `src/Backend/TaskFy.Application/Features/Tasks/Queries/GetTaskById/GetTaskByIdQueryHandler.cs`
-- [ ] T025 [US2] Add `[HttpGet("{id:guid}")]` endpoint to `TasksController` in `src/Backend/TaskFy.Api/Features/Tasks/TasksController.cs`
+- [X] T023 [P] [US2] Create `GetTaskByIdQuery` record implementing `IQuery<Result<TaskDto>>` in `src/Backend/TaskFy.Application/Features/Tasks/Queries/GetTaskById/GetTaskByIdQuery.cs`
+- [X] T024 [US2] Implement `GetTaskByIdQueryHandler` in `src/Backend/TaskFy.Application/Features/Tasks/Queries/GetTaskById/GetTaskByIdQueryHandler.cs`
+- [X] T025 [US2] Add `[HttpGet("{id:guid}")]` endpoint to `TasksController` in `src/Backend/TaskFy.Api/Features/Tasks/TasksController.cs`
 
 **Checkpoint**: User Story 2 validated - individual tasks can be queried by ID independently.
 

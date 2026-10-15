@@ -5,6 +5,8 @@ using TaskFy.Application.Cqrs;
 using TaskFy.Application.Features.Tasks.Commands.CreateTask;
 using TaskFy.Application.Features.Tasks.DTOs;
 
+using TaskFy.Application.Features.Tasks.Queries.GetTaskById;
+
 namespace TaskFy.Api.Features.Tasks;
 
 [ApiController]
@@ -38,5 +40,22 @@ public sealed class TasksController : ControllerBase
         }
 
         return Created($"/tasks/{result.Value.Id}", result.Value);
+    }
+
+    [HttpGet("{id:guid}", Name = "GetTaskById")]
+    [ProducesResponseType(typeof(TaskDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetTaskByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken)
+    {
+        var query = new GetTaskByIdQuery(id);
+        var result = await _dispatcher.QueryAsync<GetTaskByIdQuery, TaskDto>(query, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            var problemDetails = result.ToProblemDetails(HttpContext);
+            return StatusCode(problemDetails.Status ?? StatusCodes.Status404NotFound, problemDetails);
+        }
+
+        return Ok(result.Value);
     }
 }
