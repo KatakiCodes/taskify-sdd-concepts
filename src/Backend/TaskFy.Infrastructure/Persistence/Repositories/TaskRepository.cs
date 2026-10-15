@@ -68,11 +68,12 @@ public sealed class TaskRepository : ITaskRepository
             query = query.Where(t => t.EndDate.HasValue && t.EndDate.Value <= dueTo.Value);
         }
 
-        var results = await query
-            .OrderByDescending(t => t.CreatedAt)
-            .ToListAsync(cancellationToken);
+        var results = await query.ToListAsync(cancellationToken);
 
-        return results.AsReadOnly();
+        return results
+            .OrderByDescending(t => t.CreatedAt)
+            .ToList()
+            .AsReadOnly();
     }
 
     public async Task AddAsync(TaskItem task, CancellationToken cancellationToken = default)

@@ -87,15 +87,15 @@
 
 ### Tests for User Story 3
 
-- [ ] T026 [P] [US3] Create unit tests for `GetTasksQueryHandler` in `src/Backend/TaskFy.UnitTests/Features/Tasks/GetTasksQueryHandlerTests.cs`
-- [ ] T027 [P] [US3] Create mandatory happy-path integration tests for `GET /tasks` with filtering in `src/Backend/TaskFy.IntegrationTests/Features/Tasks/GetTasksEndpointTests.cs`
+- [X] T026 [P] [US3] Create unit tests for `GetTasksQueryHandler` in `src/Backend/TaskFy.UnitTests/Features/Tasks/GetTasksQueryHandlerTests.cs`
+- [X] T027 [P] [US3] Create mandatory happy-path integration tests for `GET /tasks` with filtering in `src/Backend/TaskFy.IntegrationTests/Features/Tasks/GetTasksEndpointTests.cs`
 
 ### Implementation for User Story 3
 
-- [ ] T028 [P] [US3] Create `GetTasksQuery` record implementing `IQuery<Result<IReadOnlyList<TaskDto>>>` in `src/Backend/TaskFy.Application/Features/Tasks/Queries/GetTasks/GetTasksQuery.cs`
-- [ ] T029 [US3] Implement `GetTasksQueryHandler` in `src/Backend/TaskFy.Application/Features/Tasks/Queries/GetTasks/GetTasksQueryHandler.cs`
-- [ ] T030 [P] [US3] Create `GetTasksRequest` query model in `src/Backend/TaskFy.Api/Features/Tasks/GetTasksRequest.cs`
-- [ ] T031 [US3] Add `[HttpGet]` endpoint to `TasksController` in `src/Backend/TaskFy.Api/Features/Tasks/TasksController.cs`
+- [X] T028 [P] [US3] Create `GetTasksQuery` record implementing `IQuery<Result<IReadOnlyList<TaskDto>>>` in `src/Backend/TaskFy.Application/Features/Tasks/Queries/GetTasks/GetTasksQuery.cs`
+- [X] T029 [US3] Implement `GetTasksQueryHandler` in `src/Backend/TaskFy.Application/Features/Tasks/Queries/GetTasks/GetTasksQueryHandler.cs`
+- [X] T030 [P] [US3] Create `GetTasksRequest` query model in `src/Backend/TaskFy.Api/Features/Tasks/GetTasksRequest.cs`
+- [X] T031 [US3] Add `[HttpGet]` endpoint to `TasksController` in `src/Backend/TaskFy.Api/Features/Tasks/TasksController.cs`
 
 **Checkpoint**: User Story 3 validated - multi-criteria task search and date filtering fully functional.
 
@@ -105,8 +105,8 @@
 
 **Purpose**: Execute end-to-end validation, verify build cleanliness, and enforce architectural rules.
 
-- [ ] T032 [P] Validate complete test suite execution with `dotnet test src/Backend/TaskFy.sln` ensuring 100% pass with zero warnings
-- [ ] T033 Code audit verifying One-Type-Per-File compliance across all new files and absence of unauthorized external dependencies
+- [X] T032 [P] Validate complete test suite execution with `dotnet test src/Backend/TaskFy.sln` ensuring 100% pass with zero warnings
+- [X] T033 Code audit verifying One-Type-Per-File compliance across all new files and absence of unauthorized external dependencies
 
 ---
 

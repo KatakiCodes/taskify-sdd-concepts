@@ -6,6 +6,7 @@ using TaskFy.Application.Features.Tasks.Commands.CreateTask;
 using TaskFy.Application.Features.Tasks.DTOs;
 
 using TaskFy.Application.Features.Tasks.Queries.GetTaskById;
+using TaskFy.Application.Features.Tasks.Queries.GetTasks;
 
 namespace TaskFy.Api.Features.Tasks;
 
@@ -54,6 +55,29 @@ public sealed class TasksController : ControllerBase
         {
             var problemDetails = result.ToProblemDetails(HttpContext);
             return StatusCode(problemDetails.Status ?? StatusCodes.Status404NotFound, problemDetails);
+        }
+
+        return Ok(result.Value);
+    }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(IReadOnlyList<TaskDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetTasksAsync([FromQuery] GetTasksRequest request, CancellationToken cancellationToken)
+    {
+        var query = new GetTasksQuery(
+            request.SearchTerm,
+            request.Status,
+            request.CreatedFrom,
+            request.CreatedTo,
+            request.DueFrom,
+            request.DueTo);
+
+        var result = await _dispatcher.QueryAsync<GetTasksQuery, IReadOnlyList<TaskDto>>(query, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            var problemDetails = result.ToProblemDetails(HttpContext);
+            return StatusCode(problemDetails.Status ?? StatusCodes.Status400BadRequest, problemDetails);
         }
 
         return Ok(result.Value);
