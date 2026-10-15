@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="TaskFy.Api/TaskFy.Api.csproj" />
+  <Project Path="TaskFy.Application/TaskFy.Application.csproj" />
+  <Project Path="TaskFy.Domain/TaskFy.Domain.csproj" />
+  <Project Path="TaskFy.Infrastructure/TaskFy.Infrastructure.csproj" />
+  <Project Path="TaskFy.IntegrationTests/TaskFy.IntegrationTests.csproj" />
+  <Project Path="TaskFy.UnitTests/TaskFy.UnitTests.csproj" />
+</Solution>
