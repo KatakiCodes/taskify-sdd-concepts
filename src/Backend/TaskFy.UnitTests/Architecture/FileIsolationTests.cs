@@ -9,7 +9,7 @@ public class FileIsolationTests
     public void DomainAndApplicationTypes_ShouldBePublicAndIsolated()
     {
         var domainAssembly = typeof(TaskFy.Domain.Common.Entity).Assembly;
-        var appAssembly = typeof(TaskFy.Application.Common.Result).Assembly;
+        var appAssembly = typeof(TaskFy.Application.Cqrs.Dispatcher).Assembly;
 
         var domainTypes = domainAssembly.GetExportedTypes().Where(t => !t.IsNested).ToList();
         var appTypes = appAssembly.GetExportedTypes().Where(t => !t.IsNested).ToList();

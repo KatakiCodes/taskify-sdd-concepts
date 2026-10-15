@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskFy.Api.Middleware;
-using TaskFy.Application.Common;
 using TaskFy.Domain.Common;
 using Xunit;
 

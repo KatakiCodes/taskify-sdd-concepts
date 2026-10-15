@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Hosting;
-using TaskFy.Application.Common;
 using TaskFy.Application.Cqrs;
+using TaskFy.Domain.Common;
 
 namespace TaskFy.Api.Features.Diagnostics;
 

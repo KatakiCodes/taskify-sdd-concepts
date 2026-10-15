@@ -1,6 +1,4 @@
-using TaskFy.Domain.Common;
-
-namespace TaskFy.Application.Common;
+namespace TaskFy.Domain.Common;
 
 public class Result
 {

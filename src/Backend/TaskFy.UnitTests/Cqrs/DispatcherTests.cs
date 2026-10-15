@@ -1,6 +1,6 @@
 using Moq;
-using TaskFy.Application.Common;
 using TaskFy.Application.Cqrs;
+using TaskFy.Domain.Common;
 using Xunit;
 
 namespace TaskFy.UnitTests.Cqrs;

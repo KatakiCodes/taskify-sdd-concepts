@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TaskFy.Application.Common;
 using TaskFy.Domain.Common;
 
 namespace TaskFy.Api.Middleware;

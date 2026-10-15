@@ -19,7 +19,7 @@ public class ArchitectureTests
     [Fact]
     public void Application_ShouldNotReference_InfrastructureOrApiLayers()
     {
-        var appAssembly = typeof(TaskFy.Application.Common.Result).Assembly;
+        var appAssembly = typeof(TaskFy.Application.Cqrs.Dispatcher).Assembly;
         var referencedAssemblies = appAssembly.GetReferencedAssemblies().Select(a => a.Name);
 
         Assert.DoesNotContain("TaskFy.Infrastructure", referencedAssemblies);

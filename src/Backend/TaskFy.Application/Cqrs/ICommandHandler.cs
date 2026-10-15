@@ -1,4 +1,4 @@
-using TaskFy.Application.Common;
+using TaskFy.Domain.Common;
 
 namespace TaskFy.Application.Cqrs;
 
