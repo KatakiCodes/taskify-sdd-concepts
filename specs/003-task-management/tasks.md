@@ -43,16 +43,16 @@
 
 ### Tests for User Story 1
 
-- [ ] T014 [P] [US1] Create unit tests for `TaskItem.Create` validating title constraints and date invariants in `src/Backend/TaskFy.UnitTests/Domain/TaskItemTests.cs`
-- [ ] T015 [P] [US1] Create unit tests for `CreateTaskCommandHandler` using Moq for repository and UnitOfWork in `src/Backend/TaskFy.UnitTests/Features/Tasks/CreateTaskCommandHandlerTests.cs`
-- [ ] T016 [P] [US1] Create mandatory happy-path and validation integration test for `POST /tasks` in `src/Backend/TaskFy.IntegrationTests/Features/Tasks/CreateTaskEndpointTests.cs`
+- [X] T014 [P] [US1] Create unit tests for `TaskItem.Create` validating title constraints and date invariants in `src/Backend/TaskFy.UnitTests/Domain/TaskItemTests.cs`
+- [X] T015 [P] [US1] Create unit tests for `CreateTaskCommandHandler` using Moq for repository and UnitOfWork in `src/Backend/TaskFy.UnitTests/Features/Tasks/CreateTaskCommandHandlerTests.cs`
+- [X] T016 [P] [US1] Create mandatory happy-path and validation integration test for `POST /tasks` in `src/Backend/TaskFy.IntegrationTests/Features/Tasks/CreateTaskEndpointTests.cs`
 
 ### Implementation for User Story 1
 
-- [ ] T017 [P] [US1] Create `CreateTaskCommand` record implementing `ICommand<Result<TaskDto>>` in `src/Backend/TaskFy.Application/Features/Tasks/Commands/CreateTask/CreateTaskCommand.cs`
-- [ ] T018 [US1] Implement `CreateTaskCommandHandler` in `src/Backend/TaskFy.Application/Features/Tasks/Commands/CreateTask/CreateTaskCommandHandler.cs`
-- [ ] T019 [P] [US1] Create `CreateTaskRequest` DTO in `src/Backend/TaskFy.Api/Features/Tasks/CreateTaskRequest.cs`
-- [ ] T020 [US1] Create `TasksController` inheriting from `ControllerBase` with `[HttpPost]` endpoint in `src/Backend/TaskFy.Api/Features/Tasks/TasksController.cs`
+- [X] T017 [P] [US1] Create `CreateTaskCommand` record implementing `ICommand<Result<TaskDto>>` in `src/Backend/TaskFy.Application/Features/Tasks/Commands/CreateTask/CreateTaskCommand.cs`
+- [X] T018 [US1] Implement `CreateTaskCommandHandler` in `src/Backend/TaskFy.Application/Features/Tasks/Commands/CreateTask/CreateTaskCommandHandler.cs`
+- [X] T019 [P] [US1] Create `CreateTaskRequest` DTO in `src/Backend/TaskFy.Api/Features/Tasks/CreateTaskRequest.cs`
+- [X] T020 [US1] Create `TasksController` inheriting from `ControllerBase` with `[HttpPost]` endpoint in `src/Backend/TaskFy.Api/Features/Tasks/TasksController.cs`
 
 **Checkpoint**: User Story 1 validated - tasks can be created and persisted independently.
 
