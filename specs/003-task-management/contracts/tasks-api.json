@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TasksApiContract",
+  "description": "API contract specification for Task Creation and Query Management",
+  "type": "object",
+  "definitions": {
+    "TaskDto": {
+      "type": "object",
+      "required": ["id", "userId", "name", "status", "startDate", "createdAt"],
+      "properties": {
+        "id": { "type": "string", "format": "uuid" },
+        "userId": { "type": "string", "format": "uuid" },
+        "name": { "type": "string", "minLength": 3, "maxLength": 150 },
+        "description": { "type": ["string", "null"], "maxLength": 1000 },
+        "status": { "type": "string", "enum": ["Pending", "InProgress", "Completed", "Cancelled"] },
+        "startDate": { "type": "string", "format": "date-time" },
+        "endDate": { "type": ["string", "null"], "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "CreateTaskRequest": {
+      "type": "object",
+      "required": ["name", "startDate"],
+      "properties": {
+        "name": { "type": "string", "minLength": 3, "maxLength": 150 },
+        "description": { "type": ["string", "null"], "maxLength": 1000 },
+        "startDate": { "type": "string", "format": "date-time" },
+        "endDate": { "type": ["string", "null"], "format": "date-time" }
+      }
+    }
+  },
+  "endpoints": {
+    "createTask": {
+      "method": "POST",
+      "path": "/tasks",
+      "request": {
+        "contentType": "application/json",
+        "schema": { "$ref": "#/definitions/CreateTaskRequest" }
+      },
+      "responses": {
+        "201": {
+          "description": "Task successfully created",
+          "headers": { "Location": { "type": "string" } },
+          "schema": { "$ref": "#/definitions/TaskDto" }
+        },
+        "400": {
+          "description": "Validation failure in RFC 7807 format",
+          "contentType": "application/problem+json"
+        }
+      }
+    },
+    "getTaskById": {
+      "method": "GET",
+      "path": "/tasks/{id}",
+      "parameters": [
+        { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+      ],
+      "responses": {
+        "200": {
+          "description": "Task found",
+          "schema": { "$ref": "#/definitions/TaskDto" }
+        },
+        "404": {
+          "description": "Task not found in RFC 7807 format",
+          "contentType": "application/problem+json"
+        }
+      }
+    },
+    "searchTasks": {
+      "method": "GET",
+      "path": "/tasks",
+      "parameters": [
+        { "name": "searchTerm", "in": "query", "schema": { "type": "string" } },
+        { "name": "status", "in": "query", "schema": { "type": "string", "enum": ["Pending", "InProgress", "Completed", "Cancelled"] } },
+        { "name": "createdFrom", "in": "query", "schema": { "type": "string", "format": "date-time" } },
+        { "name": "createdTo", "in": "query", "schema": { "type": "string", "format": "date-time" } },
+        { "name": "dueFrom", "in": "query", "schema": { "type": "string", "format": "date-time" } },
+        { "name": "dueTo", "in": "query", "schema": { "type": "string", "format": "date-time" } }
+      ],
+      "responses": {
+        "200": {
+          "description": "List of matching tasks",
+          "schema": {
+            "type": "array",
+            "items": { "$ref": "#/definitions/TaskDto" }
+          }
+        }
+      }
+    }
+  }
+}
