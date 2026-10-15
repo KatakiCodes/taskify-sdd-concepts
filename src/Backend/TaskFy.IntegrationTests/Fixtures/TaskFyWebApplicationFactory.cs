@@ -45,7 +45,7 @@ public class TaskFyWebApplicationFactory : WebApplicationFactory<Program>
 
             using var scope = services.BuildServiceProvider().CreateScope();
             var db = scope.ServiceProvider.GetRequiredService<TaskFyDbContext>();
-            db.Database.EnsureCreated();
+            db.Database.Migrate();
         });
     }
 

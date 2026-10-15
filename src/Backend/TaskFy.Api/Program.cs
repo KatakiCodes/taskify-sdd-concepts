@@ -17,6 +17,7 @@ builder.Services.AddProblemDetails();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDevelopmentCors();
+builder.Services.AddScoped<TaskFy.Application.Common.Interfaces.IUserContext, TaskFy.Api.Common.DefaultUserContext>();
 
 var app = builder.Build();
 

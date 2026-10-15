@@ -9,6 +9,8 @@ public class TaskFyDbContext : DbContext
     {
     }
 
+    public DbSet<TaskFy.Domain.Entities.TaskItem> Tasks => Set<TaskFy.Domain.Entities.TaskItem>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
