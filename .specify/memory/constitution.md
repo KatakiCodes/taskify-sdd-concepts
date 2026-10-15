@@ -1,3 +1,16 @@
+<!--
+SYNC IMPACT REPORT
+- Version Change: 1.4.0 -> 1.5.0
+- Bump Rationale: Minor bump - Added Principle IX for Atomic, Semantic & Portuguese Git Versioning Governance, added Section 4 on Git Versioning Flow & Branching Standard, and updated Review Gates.
+- Modified Principles: None renamed.
+- Added Principles/Sections:
+  - Principle IX: Atomic, Semantic & Portuguese Git Versioning Governance
+  - Development Workflow & Quality Gates: Section 4 on Git Versioning Flow & Branching Standard
+  - Review Gates: Verification of Conventional Commits in Portuguese and atomic staging
+- Removed Sections: None.
+- Follow-up TODOs: None.
+-->
+
 # TaskFy Constitution
 
 ## Core Principles
@@ -35,6 +48,29 @@ The Angular frontend MUST follow a Feature-First directory structure (`features/
 ### VII. Strict Dependency Governance (Zero Unauthorized Packages)
 Installing or introducing third-party external libraries or packages without prior authorization and explicit documentation is STRICTLY PROHIBITED. Every proposed package MUST be documented, vetted, and approved within the feature specifications (`spec.md`), constitution (`constitution.md`), or implementation plan (`plan.md`) before inclusion. Developers MUST prioritize built-in capabilities of the .NET 10 BCL (Base Class Library), ASP.NET Core framework, and Angular 20 standard libraries before considering external dependencies. Pre-authorized testing libraries for .NET are explicitly designated as `xunit` and `Moq`.
 
+### VIII. Secure Development Configuration & Cross-Origin Governance (User Secrets & Dev CORS)
+Sensitive configuration values—including database credentials, API keys, third-party secrets, and private tokens—MUST NEVER be committed to source control or hardcoded in `appsettings.json` or `appsettings.Development.json`. In the `Development` environment, the backend MUST utilize **.NET User Secrets** (`dotnet user-secrets`) to store and access sensitive keys locally outside the project directory.
+
+Cross-Origin Resource Sharing (CORS) MUST be explicitly configured for the `Development` environment to permit communication with authorized local frontend origins (such as `http://localhost:4200` for Angular development), enabling necessary HTTP methods and headers while strictly prohibiting unauthenticated wildcard open access (`AllowAnyOrigin`) with credentials in production-bound configurations.
+
+### IX. Atomic, Semantic & Portuguese Git Versioning Governance
+All version control operations across the repository MUST adhere to disciplined, predictable, and traceable Git practices:
+1. **Semantic Commits (Conventional Commits)**: Commits MUST follow the Conventional Commits specification format: `<tipo>(<escopo opcional>): <descrição no imperativo>`. The allowed types are:
+   - `feat`: Nova funcionalidade para o usuário, API ou desenvolvedor.
+   - `fix`: Correção de bug ou comportamento incorreto.
+   - `docs`: Alterações exclusivamente em documentação, especificações (`specs/`), planos ou markdown.
+   - `style`: Formatação, espaçamento ou ajustes cosméticos que não alteram a lógica do código.
+   - `refactor`: Refatoração de código que não adiciona funcionalidade nem corrige bug.
+   - `test`: Criação ou ajuste de testes automatizados (unitários, integração ou arquitetura).
+   - `chore`: Atualização de tarefas de build, arquivos de configuração de ferramentas, scripts ou dependências.
+   - `perf`: Alterações de código que melhoram mensuravelmente a performance.
+2. **Commit Messages Strictly in Portuguese**: All commit messages (summary and body) MUST be written in **Português**. The subject line MUST use the imperative mood (e.g., `adicionar`, `corrigir`, `implementar`, `remover` instead of past or gerund forms like `adicionado` or `adicionando`), start with a lowercase letter after the colon, omit a trailing period, and MUST NOT exceed 72 characters.
+3. **Atomic Commits**: Each commit MUST represent a single logical, cohesive, and complete unit of work. Mixing unrelated concerns (e.g., refactoring an existing repository while adding a new feature in the same commit) is STRICTLY PROHIBITED. Every individual commit MUST leave the repository in a stable state that compiles cleanly and passes existing automated tests.
+4. **Repository Hygiene & Clean Git History**:
+   - Generic, meaningless, or lazy commit messages (such as `wip`, `ajustes`, `fix`, `update`, `checkpoint`, `commiting changes`) are STRICTLY FORBIDDEN.
+   - Generated files, build outputs (`bin/`, `obj/`, `out/`), SQLite databases (`*.db`, `*.db-shm`, `*.db-wal`), local IDE settings (`.vs/`, `.vscode/`), and local secrets MUST NEVER be staged or committed.
+   - When introducing breaking changes, the commit message MUST include `BREAKING CHANGE:` in the body or footer, explicitly detailing the migration impact.
+
 ## Technology Stack & Architectural Constraints
 
 ### Backend (.NET 10 / ASP.NET Core)
@@ -44,6 +80,8 @@ Installing or introducing third-party external libraries or packages without pri
 - **Persistence & Unit of Work**: Repository Pattern combined with Unit of Work (`IUnitOfWork`). Mutations MUST execute inside transaction boundaries with explicit commit and rollback mechanisms.
 - **Query Performance & Tracking Policy**: Non-tracking queries (`AsNoTracking`) MUST be the default for all read operations. Change tracking is strictly restricted to mutation pipelines. Split querying (`AsSplitQuery`) MUST be applied to multi-collection joins (e.g., tasks and subtasks) and heavy queries to eliminate Cartesian explosion.
 - **Validation, Results & Error Representation**: Result Pattern / Notification Pattern for all domain, command, and query flows, eliminating unnecessary exceptions. All API error responses (4xx client/validation errors and 5xx server faults) MUST strictly adhere to the **RFC 7807 Problem Details** standard (`application/problem+json`).
+- **Configuration & Secrets Management**: Sensitive data MUST NEVER reside in `appsettings.json` or `appsettings.Development.json`. In `Development`, **.NET User Secrets** (`dotnet user-secrets`) MUST be utilized to manage secrets locally. Non-sensitive fallback settings are declared in `appsettings.json`.
+- **CORS Policy**: An explicit development CORS policy MUST be configured in ASP.NET Core to support local frontend development (e.g., Angular on `http://localhost:4200`), restricting origins and avoiding insecure wildcard policies.
 - **Eventing**: In-process Domain Events dispatched upon aggregate persistence.
 - **Testing Stack**: **xUnit** and **Moq** for unit testing; integration tests leveraging `WebApplicationFactory` and in-memory SQLite fixtures (using Moq for external/third-party boundaries). Every API endpoint MUST have at least one happy path integration test.
 
@@ -76,10 +114,28 @@ Before code can be merged or finalized:
 - Unit tests MUST use **xUnit** and **Moq**.
 - Every API endpoint MUST have at least one verified happy-path integration test.
 - API error responses conform strictly to the **RFC 7807 Problem Details** specification for both business validation failures and infrastructural faults.
+- Configuration files (`appsettings*.json`) MUST NOT contain secrets, credentials, or sensitive connection parameters; local development secrets MUST use User Secrets.
+- Development CORS policy is explicitly declared and bound to authorized frontend origins.
+- Commit history adheres strictly to **Conventional Commits em Português** with atomic staging and imperative tone.
 - Static analysis, linters, and compiler warnings MUST be addressed.
 - Code review MUST verify the One-Type-Per-File constraint and absence of unauthorized dependencies.
 - No business exceptions in application or domain layers.
 - Queries MUST be audited for non-tracking (`AsNoTracking`) compliance and `AsSplitQuery` adoption on collection joins; transactional mutations MUST employ Unit of Work with rollback handling.
+
+### 4. Git Versioning Flow & Branching Standard
+1. **Branch Naming**: Feature branches MUST follow the Spec Kit convention: `<prefix>-<short-name>` (e.g., `001-backend-init-devex`, `002-secrets-cors-dev`).
+2. **Progressive Atomic Commits**: Commits MUST be made progressively as each logical task or test passes, avoiding single monolithic commits at the end of a sprint or feature.
+3. **Commit Anatomy**:
+   ```text
+   <tipo>(<escopo>): <descrição curta no imperativo>
+
+   [Corpo opcional explicando o contexto, motivação ou decisão técnica]
+   ```
+   *Exemplos Válidos:*
+   - `feat(api): configurar política de cors para ambiente de desenvolvimento`
+   - `test(api): adicionar testes de integração para preflight options`
+   - `docs(constitution): adicionar regras de versionamento git e commits semânticos`
+   - `chore(api): inicializar user secrets id no csproj`
 
 ## Governance
 
@@ -93,4 +149,4 @@ This Constitution is the foundational governing document of the TaskFy project a
    - **PATCH**: Wording improvements, non-semantic clarifications, or typo fixes.
 3. Upon approval, `.specify/memory/constitution.md` MUST be updated, ratified, and dated accordingly.
 
-**Version**: 1.3.0 | **Ratified**: 2026-10-12 | **Last Amended**: 2026-10-14
+**Version**: 1.5.0 | **Ratified**: 2026-10-12 | **Last Amended**: 2026-10-15
